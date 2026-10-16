@@ -1,0 +1,13 @@
+# Recoil-electron interaction truth for standard targets named "target".
+
+/gate/actor/addActor PhaseSpaceActor TruthTarget
+/gate/actor/TruthTarget/save {OUTPUT_PREFIX}_truth_target.root
+/gate/actor/TruthTarget/attachTo target
+/gate/actor/TruthTarget/storeSecondaries true
+/gate/actor/TruthTarget/addFilter particleFilter
+/gate/actor/TruthTarget/particleFilter/addParticle e-
+/gate/actor/TruthTarget/enableParticleName true
+/gate/actor/TruthTarget/enableProductionVolume true
+/gate/actor/TruthTarget/enableProductionProcess true
+/gate/actor/TruthTarget/enableTimeFromBeginOfEvent true
+/gate/actor/TruthTarget/setMaxFileSize 2 GB

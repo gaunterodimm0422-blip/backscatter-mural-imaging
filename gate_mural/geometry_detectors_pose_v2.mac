@@ -1,0 +1,86 @@
+# ---------------------------------------------------------------------------
+# 位姿可变的探测器几何 —— v2：把 D1 与 D2 的全部可调尺寸参数化。
+#
+# **原文件 geometry_detectors_pose.mac 一个字都没动**，M1/M2 的运行记录与
+# 各 run 目录里的 macro_sha256.txt 仍然可复现。
+#
+# 相对原文件新增的别名（原文件里这些值是写死的）：
+#   D1_RMIN_MM            D1 内半径            原 20
+#   D1_HEIGHT_MM          D1 厚度              原 15
+#   D1_TRANSLATION_Z_MM   D1 在 SPECThead 内的 z  原 -22.5
+#   D2_TRANSLATION_Z_MM   D2 在 SPECThead 内的 z  原 +20
+# 原有别名 D1_RMAX_MM、HEAD_X_MM 不变。
+#
+# 坐标换算：SPECThead 的中心在世界坐标 z = 40 mm，所以
+#     D1 全局中面 z = 40 + D1_TRANSLATION_Z_MM
+#     D2 全局中面 z = 40 + D2_TRANSLATION_Z_MM
+#
+# 两条必须一起满足的几何约束（改任何一个数之前先算一遍）：
+#
+# 约束一：源不能直照 D1 内壁。
+#   源在 z = 17.5，发射锥半角为宏里的 SOURCE_THETA_MAX_DEG。往下走的光子要穿过
+#   D1 中间的孔，需要
+#       D1_RMIN_MM > (17.5 - D1 下表面 z) * tan(SOURCE_THETA_MAX_DEG)
+#   本轮取值：D1 下表面 z = 2.5，θ = 35° → 下限 15.0*0.7002 = 10.50 mm，
+#   内半径 12.5 mm 留 2.00 mm 余量。
+#
+# 约束二：发射锥与 D2 的接受角要配。
+#   D2 半宽 25 mm，源到 D2 中面 (40 + D2_TRANSLATION_Z_MM - 17.5)。
+#   本轮 D2 中面 z = 52.5，源到中面 35.0 mm，边缘接受半角 atan(25/35) = 35.5°，
+#   与 35° 发射锥基本重合 —— 锥正好填满 D2 的内切圆，四个角不被照到。
+# ---------------------------------------------------------------------------
+
+/gate/world/geometry/setXLength 800 mm
+/gate/world/geometry/setYLength 800 mm
+/gate/world/geometry/setZLength 500 mm
+/gate/world/setMaterial Vacuum
+
+/gate/world/daughters/name SPECThead
+/gate/world/daughters/insert box
+/gate/SPECThead/geometry/setXLength 600 mm
+/gate/SPECThead/geometry/setYLength 600 mm
+/gate/SPECThead/geometry/setZLength 80 mm
+/gate/SPECThead/setMaterial Vacuum
+/gate/SPECThead/placement/setTranslation {HEAD_X_MM} 0 40 mm
+/gate/SPECThead/vis/forceWireframe
+/gate/SPECThead/vis/setColor white
+
+/gate/SPECThead/daughters/name BSdetector
+/gate/SPECThead/daughters/insert cylinder
+/gate/BSdetector/setMaterial GAGG
+/gate/BSdetector/geometry/setRmin {D1_RMIN_MM} mm
+/gate/BSdetector/geometry/setRmax {D1_RMAX_MM} mm
+/gate/BSdetector/geometry/setHeight {D1_HEIGHT_MM} mm
+/gate/BSdetector/placement/setTranslation 0 0 {D1_TRANSLATION_Z_MM} mm
+/gate/BSdetector/vis/forceSolid
+/gate/BSdetector/vis/setColor cyan
+
+/gate/SPECThead/daughters/name CoinDetector
+/gate/SPECThead/daughters/insert box
+/gate/CoinDetector/setMaterial Vacuum
+/gate/CoinDetector/geometry/setXLength 50 mm
+/gate/CoinDetector/geometry/setYLength 50 mm
+/gate/CoinDetector/geometry/setZLength 20 mm
+/gate/CoinDetector/placement/setTranslation 0 0 {D2_TRANSLATION_Z_MM} mm
+/gate/CoinDetector/vis/forceWireframe
+/gate/CoinDetector/vis/setColor green
+
+/gate/CoinDetector/daughters/name crystal
+/gate/CoinDetector/daughters/insert box
+/gate/crystal/setMaterial GAGG
+/gate/crystal/geometry/setXLength 0.93 mm
+/gate/crystal/geometry/setYLength 0.93 mm
+/gate/crystal/geometry/setZLength 20 mm
+/gate/crystal/placement/setTranslation 0 0 0 mm
+/gate/crystal/vis/forceSolid
+/gate/crystal/vis/setColor red
+
+/gate/crystal/repeaters/insert cubicArray
+/gate/crystal/cubicArray/setRepeatNumberX 50
+/gate/crystal/cubicArray/setRepeatNumberY 50
+/gate/crystal/cubicArray/setRepeatNumberZ 1
+/gate/crystal/cubicArray/setRepeatVector 1 1 0 mm
+
+/gate/systems/SPECThead/crystal/attach crystal
+/gate/crystal/attachCrystalSD
+/gate/BSdetector/attachCrystalSD

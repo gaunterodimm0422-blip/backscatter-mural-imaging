@@ -1,0 +1,4 @@
+# This scientific snapshot contains frozen SHA-256 references. Preserve file
+# bytes on every platform, rather than applying the user's core.autocrlf setting.
+# In particular, the copied GATE macros and shell scripts must retain their LF.
+* -text

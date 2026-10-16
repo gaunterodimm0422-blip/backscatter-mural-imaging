@@ -1,0 +1,40 @@
+{
+ "k": 0.7953373343996815,
+ "sk": 0.025980134601552046,
+ "b": 0.4140838975525125,
+ "sb": 0.25455229289051223,
+ "r2": 0.9978704677563102,
+ "srms": 0.4647467762693183,
+ "srms_definition": "s = sqrt(sum(res^2)/(n-2))（不是 RMS）",
+ "u": [
+  0.0,
+  -8.0,
+  -16.0,
+  8.0
+ ],
+ "y": [
+  -0.13428910889670911,
+  -5.831127497898982,
+  -12.206847303856621,
+  7.1032021504674585
+ ],
+ "sig": [
+  0.5118411980021651,
+  0.5398985477796825,
+  1.0558912304090597,
+  0.6210376637380399
+ ],
+ "res": [
+  -0.5483730064492216,
+  0.11748727974595763,
+  0.10446614898576989,
+  0.32641957771749475
+ ],
+ "response": "D2 15%（response_d2f15）",
+ "sources": [
+  "/mnt/user-data/uploads/beisanshe/m3/outputs/d2f15/m2_mural_edge/m2_edge_result.json",
+  "/mnt/user-data/uploads/beisanshe/m3/outputs/d2f15/m2_mural_edge_offset/m2_edge_result.json",
+  "/mnt/user-data/uploads/beisanshe/m3/outputs/d2f15/m2_mural_edge_offset2/m2_edge_result.json",
+  "/mnt/user-data/uploads/beisanshe/m3/outputs/d2f15/m2_mural_edge_offset3/m2_edge_result.json"
+ ]
+}

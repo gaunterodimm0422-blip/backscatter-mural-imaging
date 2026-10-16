@@ -1,0 +1,14 @@
+# GATE documentation recommends the Geant4 physics-list builder mechanism.
+# Livermore electromagnetic physics is used for 511 keV photon transport.
+/gate/physics/addPhysicsList emlivermore
+
+# Detector and phantom production cuts. These are not spatial-resolution settings.
+/gate/physics/Gamma/SetCutInRegion crystal 0.1 mm
+/gate/physics/Electron/SetCutInRegion crystal 0.1 mm
+/gate/physics/Positron/SetCutInRegion crystal 0.1 mm
+/gate/physics/Gamma/SetCutInRegion BSdetector 0.1 mm
+/gate/physics/Electron/SetCutInRegion BSdetector 0.1 mm
+/gate/physics/Positron/SetCutInRegion BSdetector 0.1 mm
+/gate/physics/Gamma/SetCutInRegion {PHANTOM_VOLUME} 0.1 mm
+/gate/physics/Electron/SetCutInRegion {PHANTOM_VOLUME} 0.1 mm
+/gate/physics/Positron/SetCutInRegion {PHANTOM_VOLUME} 0.1 mm

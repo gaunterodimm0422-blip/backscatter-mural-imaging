@@ -1,0 +1,20 @@
+# 壁画体模的相互作用真值（与 truth_concrete.mac 同构）。
+#
+# 康普顿散射会在作用顶点产生一个反冲电子。这个 actor 记录在粗泥层里产生的
+# 电子的第一步，含 EventID、ParentID、位置与产生过程。分析侧保留由康普顿
+# 产生的电子，并用 ParentID 匹配 D1 Hits 的 primaryID。
+#
+# 注意：只挂在粗泥层上。细泥层（表层 5 mm）与支撑体（40 mm 以深）里的
+# 作用顶点不会被记录。空鼓病害的关注深度 5~40 mm 全部落在粗泥层内，
+# 所以这个范围够用；若以后要看更深的层间脱离，需要另加一个 actor。
+/gate/actor/addActor PhaseSpaceActor TruthMural
+/gate/actor/TruthMural/save {OUTPUT_PREFIX}_truth_mural.root
+/gate/actor/TruthMural/attachTo ground_coarse
+/gate/actor/TruthMural/storeSecondaries true
+/gate/actor/TruthMural/addFilter particleFilter
+/gate/actor/TruthMural/particleFilter/addParticle e-
+/gate/actor/TruthMural/enableParticleName true
+/gate/actor/TruthMural/enableProductionVolume true
+/gate/actor/TruthMural/enableProductionProcess true
+/gate/actor/TruthMural/enableTimeFromBeginOfEvent true
+/gate/actor/TruthMural/setMaxFileSize 2 GB

@@ -1,0 +1,65 @@
+# ---------------------------------------------------------------------------
+# Canonical detector geometry (global units: mm)
+# +z points from the object toward the detectors.
+# ---------------------------------------------------------------------------
+
+/gate/world/geometry/setXLength 700 mm
+/gate/world/geometry/setYLength 700 mm
+/gate/world/geometry/setZLength 500 mm
+/gate/world/setMaterial Vacuum
+
+# The reserved SPECThead name creates the SPECT system base.
+/gate/world/daughters/name SPECThead
+/gate/world/daughters/insert box
+/gate/SPECThead/geometry/setXLength 600 mm
+/gate/SPECThead/geometry/setYLength 600 mm
+/gate/SPECThead/geometry/setZLength 80 mm
+/gate/SPECThead/setMaterial Vacuum
+/gate/SPECThead/placement/setTranslation 0 0 40 mm
+/gate/SPECThead/vis/forceWireframe
+/gate/SPECThead/vis/setColor white
+
+# D1: monolithic annular GAGG backscatter detector.
+# Global centre z = 40 - 22.5 = 17.5 mm; z extent = [10, 25] mm.
+/gate/SPECThead/daughters/name BSdetector
+/gate/SPECThead/daughters/insert cylinder
+/gate/BSdetector/setMaterial GAGG
+/gate/BSdetector/geometry/setRmin 20 mm
+/gate/BSdetector/geometry/setRmax {D1_RMAX_MM} mm
+/gate/BSdetector/geometry/setHeight 15 mm
+/gate/BSdetector/placement/setTranslation 0 0 -22.5 mm
+/gate/BSdetector/vis/forceSolid
+/gate/BSdetector/vis/setColor cyan
+
+# D2 envelope: 50 x 50 x 20 mm3, global centre z = 60 mm.
+/gate/SPECThead/daughters/name CoinDetector
+/gate/SPECThead/daughters/insert box
+/gate/CoinDetector/setMaterial Vacuum
+/gate/CoinDetector/geometry/setXLength 50 mm
+/gate/CoinDetector/geometry/setYLength 50 mm
+/gate/CoinDetector/geometry/setZLength 20 mm
+/gate/CoinDetector/placement/setTranslation 0 0 20 mm
+/gate/CoinDetector/vis/forceWireframe
+/gate/CoinDetector/vis/setColor green
+
+# D2 crystal: 0.93 mm active width on a 1.00 mm pitch.
+/gate/CoinDetector/daughters/name crystal
+/gate/CoinDetector/daughters/insert box
+/gate/crystal/setMaterial GAGG
+/gate/crystal/geometry/setXLength 0.93 mm
+/gate/crystal/geometry/setYLength 0.93 mm
+/gate/crystal/geometry/setZLength 20 mm
+/gate/crystal/placement/setTranslation 0 0 0 mm
+/gate/crystal/vis/forceSolid
+/gate/crystal/vis/setColor red
+
+/gate/crystal/repeaters/insert cubicArray
+/gate/crystal/cubicArray/setRepeatNumberX 50
+/gate/crystal/cubicArray/setRepeatNumberY 50
+/gate/crystal/cubicArray/setRepeatNumberZ 1
+/gate/crystal/cubicArray/setRepeatVector 1 1 0 mm
+
+# D2 is the system crystal level. Both detector volumes are sensitive.
+/gate/systems/SPECThead/crystal/attach crystal
+/gate/crystal/attachCrystalSD
+/gate/BSdetector/attachCrystalSD

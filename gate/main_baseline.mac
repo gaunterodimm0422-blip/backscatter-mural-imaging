@@ -1,0 +1,39 @@
+# Required command-line aliases:
+#   OUTPUT_PREFIX, N_PRIMARIES, SOURCE_ACTIVITY_BQ,
+#   RANDOM_SEED, D1_RMAX_MM, SOURCE_THETA_MAX_DEG,
+#   TARGET_*, and VOID_* geometry parameters
+
+/control/execute verbosity.mac
+
+/gate/geometry/setMaterialDatabase materials/BackscatterMaterials.db
+
+/control/execute geometry_detectors.mac
+/control/execute {PHANTOM_MAC}
+/control/execute physics.mac
+/control/execute output_hits.mac
+/control/execute {TRUTH_MAC}
+
+/gate/random/setEngineName JamesRandom
+/gate/random/setEngineSeed {RANDOM_SEED}
+/gate/random/verbose 1
+
+/gate/run/initialize
+
+# One event emits a pair of opposite 511 keV photons.
+/gate/source/addSource twogamma
+/gate/source/twogamma/setActivity {SOURCE_ACTIVITY_BQ} becquerel
+/gate/source/twogamma/gps/particle gamma
+/gate/source/twogamma/setType backtoback
+/gate/source/twogamma/gps/ene/type Mono
+/gate/source/twogamma/gps/ene/mono 511 keV
+/gate/source/twogamma/gps/pos/centre 0 0 17.5 mm
+/gate/source/twogamma/gps/ang/type iso
+/gate/source/twogamma/gps/ang/mintheta 0 deg
+/gate/source/twogamma/gps/ang/maxtheta {SOURCE_THETA_MAX_DEG} deg
+/gate/source/twogamma/gps/ang/minphi 0 deg
+/gate/source/twogamma/gps/ang/maxphi 360 deg
+
+/gate/application/setTotalNumberOfPrimaries {N_PRIMARIES}
+/gate/application/startDAQ
+
+exit

@@ -1,0 +1,18 @@
+# Exact interaction evidence for PSF/reconstruction validation.
+#
+# A Compton interaction creates a recoil electron at the gamma interaction vertex.
+# The actor stores the first step of electrons created in concrete, including
+# EventID, ParentID, position and CreatorProcess. Analysis keeps Compton-created
+# electrons and matches ParentID to the D1 Hits primaryID.
+
+/gate/actor/addActor PhaseSpaceActor TruthConcrete
+/gate/actor/TruthConcrete/save {OUTPUT_PREFIX}_truth_concrete.root
+/gate/actor/TruthConcrete/attachTo concrete
+/gate/actor/TruthConcrete/storeSecondaries true
+/gate/actor/TruthConcrete/addFilter particleFilter
+/gate/actor/TruthConcrete/particleFilter/addParticle e-
+/gate/actor/TruthConcrete/enableParticleName true
+/gate/actor/TruthConcrete/enableProductionVolume true
+/gate/actor/TruthConcrete/enableProductionProcess true
+/gate/actor/TruthConcrete/enableTimeFromBeginOfEvent true
+/gate/actor/TruthConcrete/setMaxFileSize 2 GB

@@ -1,0 +1,65 @@
+# ---------------------------------------------------------------------------
+# 位姿可变的探测器几何（S0/S2/S3 多视角实验用）
+#
+# 与 geometry_detectors.mac 完全相同，只有两处不同：
+#   1. 世界体加大到 800 x 800 x 500 mm，为探测头横向平移留出空间；
+#   2. SPECThead（内含 D1 与 D2）整体横向平移 {HEAD_X_MM}。
+#
+# 探测头保持与物体表面平行，只做横向平移，因此不会与物体发生几何重叠。
+# 源的位置在 main_baseline_pose.mac 中做同样的平移。
+# ---------------------------------------------------------------------------
+
+/gate/world/geometry/setXLength 800 mm
+/gate/world/geometry/setYLength 800 mm
+/gate/world/geometry/setZLength 500 mm
+/gate/world/setMaterial Vacuum
+
+/gate/world/daughters/name SPECThead
+/gate/world/daughters/insert box
+/gate/SPECThead/geometry/setXLength 600 mm
+/gate/SPECThead/geometry/setYLength 600 mm
+/gate/SPECThead/geometry/setZLength 80 mm
+/gate/SPECThead/setMaterial Vacuum
+/gate/SPECThead/placement/setTranslation {HEAD_X_MM} 0 40 mm
+/gate/SPECThead/vis/forceWireframe
+/gate/SPECThead/vis/setColor white
+
+/gate/SPECThead/daughters/name BSdetector
+/gate/SPECThead/daughters/insert cylinder
+/gate/BSdetector/setMaterial GAGG
+/gate/BSdetector/geometry/setRmin 20 mm
+/gate/BSdetector/geometry/setRmax {D1_RMAX_MM} mm
+/gate/BSdetector/geometry/setHeight 15 mm
+/gate/BSdetector/placement/setTranslation 0 0 -22.5 mm
+/gate/BSdetector/vis/forceSolid
+/gate/BSdetector/vis/setColor cyan
+
+/gate/SPECThead/daughters/name CoinDetector
+/gate/SPECThead/daughters/insert box
+/gate/CoinDetector/setMaterial Vacuum
+/gate/CoinDetector/geometry/setXLength 50 mm
+/gate/CoinDetector/geometry/setYLength 50 mm
+/gate/CoinDetector/geometry/setZLength 20 mm
+/gate/CoinDetector/placement/setTranslation 0 0 20 mm
+/gate/CoinDetector/vis/forceWireframe
+/gate/CoinDetector/vis/setColor green
+
+/gate/CoinDetector/daughters/name crystal
+/gate/CoinDetector/daughters/insert box
+/gate/crystal/setMaterial GAGG
+/gate/crystal/geometry/setXLength 0.93 mm
+/gate/crystal/geometry/setYLength 0.93 mm
+/gate/crystal/geometry/setZLength 20 mm
+/gate/crystal/placement/setTranslation 0 0 0 mm
+/gate/crystal/vis/forceSolid
+/gate/crystal/vis/setColor red
+
+/gate/crystal/repeaters/insert cubicArray
+/gate/crystal/cubicArray/setRepeatNumberX 50
+/gate/crystal/cubicArray/setRepeatNumberY 50
+/gate/crystal/cubicArray/setRepeatNumberZ 1
+/gate/crystal/cubicArray/setRepeatVector 1 1 0 mm
+
+/gate/systems/SPECThead/crystal/attach crystal
+/gate/crystal/attachCrystalSD
+/gate/BSdetector/attachCrystalSD

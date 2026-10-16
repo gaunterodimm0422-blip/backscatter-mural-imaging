@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "name": "tagged_511keV_backscatter_standard_target",
+    "baseline_id": "concrete_double_rod_depth_30mm",
+    "coordinate_convention": "+z points from the target toward the detectors; z=0 mm is the system axial reference plane",
+    "gate_target": "GATE 9.4.1 / Geant4 11.3.0, verified on vGate-9.4.1"
+  },
+  "simulation": {
+    "primary_events": 5000000,
+    "source_activity_Bq": 1000000,
+    "random_engine": "JamesRandom",
+    "random_seed": 24061873,
+    "incident_energy_keV": 511.0,
+    "electron_rest_energy_keV": 511.0,
+    "physics_list": "emlivermore"
+  },
+  "source": {
+    "position_mm": [
+      0.0,
+      0.0,
+      17.5
+    ],
+    "type": "backtoback",
+    "theta_range_deg": [
+      0.0,
+      45.0
+    ],
+    "phi_range_deg": [
+      0.0,
+      360.0
+    ]
+  },
+  "detectors": {
+    "d1": {
+      "role": "backscatter_imaging_detector",
+      "gate_volume": "BSdetector",
+      "root_tree": "Hits_BSdetector",
+      "material": "GAGG",
+      "density_g_cm3": 6.63,
+      "shape": "annular_cylinder",
+      "center_z_mm": 17.5,
+      "thickness_mm": 15.0,
+      "radius_mm": [
+        20.0,
+        200.0
+      ]
+    },
+    "d2": {
+      "role": "tagging_collimation_detector",
+      "gate_volume": "crystal",
+      "root_tree": "Hits_crystal",
+      "material": "GAGG",
+      "density_g_cm3": 6.63,
+      "array": [
+        50,
+        50,
+        1
+      ],
+      "crystal_size_mm": [
+        0.93,
+        0.93,
+        20.0
+      ],
+      "pitch_mm": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "center_z_mm": 60.0,
+      "envelope_half_width_mm": 25.0
+    }
+  },
+  "phantom": {
+    "name": "double_rod",
+    "gate_volume": "target",
+    "material": "Concrete",
+    "target_kind": "double_rod",
+    "size_mm": [
+      12.0,
+      300.0,
+      2.0
+    ],
+    "center_mm": [
+      0.0,
+      0.0,
+      -30.0
+    ],
+    "z_interval_mm": [
+      -31.0,
+      -29.0
+    ],
+    "depth_mm": 30.0,
+    "thickness_mm": 2.0,
+    "radius_mm": 1.0,
+    "diameter_mm": 2.0,
+    "separation_mm": 10.0,
+    "target_centers_mm": [
+      [
+        -5.0,
+        0.0,
+        -30.0
+      ],
+      [
+        5.0,
+        0.0,
+        -30.0
+      ]
+    ],
+    "edge_x_mm": null,
+    "environment_material": "Vacuum",
+    "measurement_role": "intrinsic_geometric_response",
+    "phantom_sd": true,
+    "truth_actor": "TruthTarget"
+  },
+  "selection": {
+    "coincidence_window_ns": 10.0,
+    "d1_energy_window_keV": [
+      170.34,
+      300.0
+    ],
+    "d2_energy_window_keV": [
+      450.0,
+      560.0
+    ],
+    "d1_radius_mm": [
+      20.0,
+      200.0
+    ],
+    "d2_half_width_mm": 25.0,
+    "incident_angle_deg": [
+      0.0,
+      45.0
+    ],
+    "scatter_angle_deg": [
+      90.0,
+      180.0
+    ],
+    "require_different_primary_photons": true,
+    "phantom_truth_volume_contains": "target",
+    "phantom_truth_policy": "prefer_single_phantom_compton"
+  },
+  "reconstruction": {
+    "path_length_mm": [
+      1.0,
+      280.0
+    ],
+    "electronics_blur_enabled": false,
+    "note": "Stage-1 validation uses raw GATE deposited energy. Electronics response will be applied as an explicit, versioned model after the raw spectra pass."
+  },
+  "sweep_grid": {
+    "d1_energy_windows_keV": [
+      [
+        160.0,
+        270.0
+      ],
+      [
+        170.34,
+        255.5
+      ],
+      [
+        180.0,
+        250.0
+      ],
+      [
+        190.0,
+        240.0
+      ]
+    ],
+    "d2_energy_windows_keV": [
+      [
+        450.0,
+        560.0
+      ],
+      [
+        480.0,
+        540.0
+      ],
+      [
+        500.0,
+        522.0
+      ]
+    ],
+    "incident_angle_max_deg": [
+      10.0,
+      20.0,
+      30.0,
+      37.5,
+      45.0
+    ],
+    "scatter_angle_min_deg": [
+      90.0,
+      100.0,
+      110.0,
+      120.0,
+      130.0,
+      140.0
+    ],
+    "d1_radius_max_mm": [
+      75.0,
+      100.0,
+      125.0,
+      150.0,
+      175.0,
+      200.0
+    ],
+    "d1_azimuth_sector_count": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "d2_region": [
+      "all",
+      "center_10mm",
+      "center_20mm",
+      "quadrants",
+      "rings"
+    ]
+  }
+}

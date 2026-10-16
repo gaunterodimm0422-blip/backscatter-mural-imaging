@@ -1,0 +1,104 @@
+# ---------------------------------------------------------------------------
+# 壁画体模：地仗层（细泥 + 粗泥）+ 砂砾岩支撑体，粗泥层内可放一层空鼓。
+#
+# 层结构与厚度（数值出处见文件末）
+# --------------------------------
+#   细泥层（麻泥）  莫高窟、榆林窟约 0.5 cm      -> GROUND_FINE_MM   默认 5
+#   粗泥层（草泥）  莫高窟等平均 3.5 cm ± 0.5 cm -> GROUND_COARSE_MM 默认 35
+#   支撑体（砂砾岩）莫高窟崖体，玉门组           -> SUPPORT_MM       默认 100
+#
+# 颜料层与白粉层合计不到 1 mm，对 511 keV 的散射贡献低于 1.5%，本体模并入细泥层。
+# 若以后要做起甲（颜料层病害）必须单独建层，且要注意铅白等高 Z 颜料。
+#
+# 坐标：壁画表面 z = 0 mm，+z 指向探测器，物体在 z < 0 一侧。
+#   细泥层  z ∈ [ -GROUND_FINE_MM , 0 ]
+#   粗泥层  z ∈ [ -(GROUND_FINE_MM+GROUND_COARSE_MM) , -GROUND_FINE_MM ]
+#   支撑体  再往里 SUPPORT_MM
+#
+# 空鼓（VOID）是粗泥层的子体积，Geant4 会用空气替换该长方体内的地仗材料，
+# 不产生重叠。它必须完整落在粗泥层之内：
+#     GROUND_FINE_MM <= VOID_DEPTH_MM
+#     VOID_DEPTH_MM + VOID_THICKNESS_MM <= GROUND_FINE_MM + GROUND_COARSE_MM
+# 局部 z 由运行脚本算好后传进来：
+#     VOID_LOCAL_Z_MM = GROUND_FINE_MM + GROUND_COARSE_MM/2
+#                       - VOID_DEPTH_MM - VOID_THICKNESS_MM/2
+# 取默认值时 = 22.5 - VOID_DEPTH_MM - VOID_THICKNESS_MM/2。
+#
+# 空鼓贴在地仗/支撑体界面（最常见的一类）时：
+#     VOID_DEPTH_MM = GROUND_FINE_MM + GROUND_COARSE_MM - VOID_THICKNESS_MM
+#
+# 无空鼓参照：把 VOID_X_MM 挪到 200 mm（挪出视野、仍在体模内），其余一切不变。
+# 与混凝土空洞那一轮的对照做法一致：几何、材料、truth actor 完全相同，
+# 只有空鼓位置不同，孔径衰减在相除时精确抵消。
+#
+# 两层地仗共用前缀 ground_，分析侧可用 phantom_truth_volume_contains="ground"
+# 一次匹配两层。
+# ---------------------------------------------------------------------------
+
+# ---- 细泥层（麻泥） ----
+/gate/world/daughters/name ground_fine
+/gate/world/daughters/insert box
+/gate/ground_fine/geometry/setXLength 500 mm
+/gate/ground_fine/geometry/setYLength 500 mm
+/gate/ground_fine/geometry/setZLength {GROUND_FINE_MM} mm
+/gate/ground_fine/setMaterial {GROUND_MATERIAL}
+/gate/ground_fine/placement/setTranslation 0 0 {GROUND_FINE_CENTER_Z_MM} mm
+/gate/ground_fine/vis/forceSolid
+/gate/ground_fine/vis/setColor yellow
+
+# ---- 粗泥层（草泥） ----
+/gate/world/daughters/name ground_coarse
+/gate/world/daughters/insert box
+/gate/ground_coarse/geometry/setXLength 500 mm
+/gate/ground_coarse/geometry/setYLength 500 mm
+/gate/ground_coarse/geometry/setZLength {GROUND_COARSE_MM} mm
+/gate/ground_coarse/setMaterial {GROUND_MATERIAL}
+/gate/ground_coarse/placement/setTranslation 0 0 {GROUND_COARSE_CENTER_Z_MM} mm
+/gate/ground_coarse/vis/forceSolid
+/gate/ground_coarse/vis/setColor grey
+
+# ---- 空鼓（粗泥层的子体积） ----
+/gate/ground_coarse/daughters/name void
+/gate/ground_coarse/daughters/insert box
+/gate/void/geometry/setXLength {VOID_XLEN_MM} mm
+/gate/void/geometry/setYLength {VOID_YLEN_MM} mm
+/gate/void/geometry/setZLength {VOID_THICKNESS_MM} mm
+/gate/void/setMaterial {VOID_MATERIAL}
+/gate/void/placement/setTranslation {VOID_X_MM} {VOID_Y_MM} {VOID_LOCAL_Z_MM} mm
+/gate/void/vis/forceSolid
+/gate/void/vis/setColor cyan
+
+# ---- 支撑体（砂砾岩崖体） ----
+/gate/world/daughters/name support
+/gate/world/daughters/insert box
+/gate/support/geometry/setXLength 500 mm
+/gate/support/geometry/setYLength 500 mm
+/gate/support/geometry/setZLength {SUPPORT_MM} mm
+/gate/support/setMaterial {SUPPORT_MATERIAL}
+/gate/support/placement/setTranslation 0 0 {SUPPORT_CENTER_Z_MM} mm
+/gate/support/vis/forceSolid
+/gate/support/vis/setColor red
+
+# nPhantomCompton / nPhantomRayleigh / comptVolName 需要这三个都挂上。
+/gate/ground_fine/attachPhantomSD
+/gate/ground_coarse/attachPhantomSD
+/gate/support/attachPhantomSD
+
+# ---------------------------------------------------------------------------
+# 数值出处
+# ---------------------------------------------------------------------------
+# 细泥层 0.5 cm、粗泥层 3.5±0.5 cm（莫高窟、榆林窟、西千佛洞）：
+#     《石窟寺壁画地仗制作材质工艺研究进展》
+# 粗泥层颗粒组成（莫高窟第 55 窟底层壁画）：粘粒 21.25% / 粉粒 43.97% / 砂粒 34.79%
+#     同上
+# 加筋：粗泥层麦秸秆 3.0~5.0%，细泥层不超过 1.0%（已并入基体，未单独建模）
+#     同上
+# 支撑体矿物组成（玉门组砂砾岩）：石英 38~47% / 方解石 10~19% / 钠长石 13~19%
+#     / 白云石 6~16% / 绿泥石 3~6% / 白云母 2~4%，钙质-硅钙质胶结
+#     《敦煌莫高窟玉门组砂砾岩风化特征研究》
+# 空鼓深度：一般 2~5 cm，很少超过 10 cm；实验室试件曾做 5 / 18 / 23 mm 的空隙
+#     Detection of Delamination in Wall Paintings by Ground Penetrating Radar,
+#     IntechOpen（布达拉宫实地测量深度约 5 cm，脱层区可达 3.2 m x 0.28 m）
+# 材料密度：地仗 1.70 g/cm3、砂砾岩 2.20 g/cm3 —— **是取值，不是实测**，
+#     materials/BackscatterMaterials.db 里同时给了低/高档用于敏感性扫描。
+# ---------------------------------------------------------------------------

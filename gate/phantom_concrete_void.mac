@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------------------
+# Full 100 mm concrete slab with one cylindrical air-equivalent void.
+#
+# The concrete top surface is z=0 mm.  The void cylinder is parallel to the
+# global y axis and is a daughter of the concrete volume, so Geant4 replaces
+# the concrete material inside the cylinder with Vacuum without an overlap.
+#
+# VOID_LOCAL_Z_MM is expressed in the concrete mother's coordinates:
+#     VOID_LOCAL_Z_MM = 50 mm - VOID_DEPTH_MM
+# The runner records both quantities for auditability.
+# ---------------------------------------------------------------------------
+
+/gate/world/daughters/name concrete
+/gate/world/daughters/insert box
+/gate/concrete/geometry/setXLength 500 mm
+/gate/concrete/geometry/setYLength 500 mm
+/gate/concrete/geometry/setZLength 100 mm
+/gate/concrete/setMaterial Concrete
+/gate/concrete/placement/setTranslation 0 0 -50 mm
+/gate/concrete/vis/forceSolid
+/gate/concrete/vis/setColor grey
+
+/gate/concrete/daughters/name void
+/gate/concrete/daughters/insert cylinder
+/gate/void/geometry/setRmin 0 mm
+/gate/void/geometry/setRmax {VOID_RADIUS_MM} mm
+/gate/void/geometry/setHeight {VOID_LENGTH_MM} mm
+/gate/void/setMaterial Vacuum
+/gate/void/placement/setRotationAxis 1 0 0
+/gate/void/placement/setRotationAngle 90 deg
+/gate/void/placement/setTranslation {VOID_X_MM} 0 {VOID_LOCAL_Z_MM} mm
+/gate/void/vis/forceSolid
+/gate/void/vis/setColor cyan
+
+# Required for nPhantomCompton, nPhantomRayleigh and comptVolName in detector Hits.
+/gate/concrete/attachPhantomSD

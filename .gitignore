@@ -1,0 +1,85 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+
+# GATE / ROOT outputs
+gate/output/
+gate_mural/output/
+runs/
+*.root
+*.IAEAphsp
+*.IAEAheader
+
+# Generated analysis artefacts
+artifacts/
+*.npz
+*.log
+*.inspect.ndjson
+
+# Local workspaces, intermediate exports and imported historical copies
+/.codex_work/
+/tmp/
+/output/
+/Claude outputs/
+/report_latex/build/
+
+# Keep the formal 15% analysis snapshot, not the imported 12% output tree.
+/m3/*
+!/m3/outputs/
+/m3/outputs/*
+!/m3/outputs/d2f15/
+
+# Four small histogram/profile datasets needed to reproduce the current figures.
+!/m3/outputs/d2f15/imaging_demo_m3/imaging_demo_data.npz
+!/m3/outputs/d2f15/imaging_demo_m3x23/imaging_demo_data.npz
+!/m3/outputs/d2f15/imaging_demo_m3x31/imaging_demo_data.npz
+!/m3/outputs/d2f15/imaging_demo_m2/imaging_demo_data.npz
+
+# Keep the small, named source figures and their inputs; leave large historical
+# image/export trees on the local disk. Ignoring does not delete any files.
+/outputs/*
+!/outputs/head_geometry_v3.png
+!/outputs/head_geometry_v3.pdf
+!/outputs/closed_form_reconstruction.png
+!/outputs/closed_form_reconstruction.pdf
+!/outputs/closed_form_doc_a.png
+!/outputs/closed_form_doc_b.png
+!/outputs/cone_origin.png
+!/outputs/cone_origin.pdf
+!/outputs/m3_edge_ratio.png
+!/outputs/m3_edge_ratio.pdf
+!/outputs/m2_edge_ratio.png
+!/outputs/m2_edge_ratio.pdf
+!/outputs/m2_calibration.png
+!/outputs/m2_calibration.pdf
+!/outputs/imaging_demo_fig1.png
+!/outputs/imaging_demo_fig1.pdf
+!/outputs/imaging_demo_fig2.png
+!/outputs/imaging_demo_fig2.pdf
+!/outputs/framework_sim_p1.png
+!/outputs/framework_sim_p2.png
+!/outputs/framework_sim_p3.png
+!/outputs/framework_sim_p4.png
+!/outputs/framework_sim_paper.pdf
+!/outputs/calib_fit.json
+!/outputs/m3v2_predict.json
+
+# Root deliverables are retained; nested historical export bundles are local.
+/deliverables/*/
+
+# Credentials must never be committed, even to a private repository.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+

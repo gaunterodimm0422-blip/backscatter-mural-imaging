@@ -1,0 +1,12 @@
+# Edge-spread target: a 300 mm wide half-plane with its edge at global x=0.
+
+/gate/world/daughters/name target
+/gate/world/daughters/insert box
+/gate/target/geometry/setXLength 300 mm
+/gate/target/geometry/setYLength {TARGET_LATERAL_MM} mm
+/gate/target/geometry/setZLength {TARGET_THICKNESS_MM} mm
+/gate/target/setMaterial {TARGET_MATERIAL}
+/gate/target/placement/setTranslation 150 0 -{TARGET_DEPTH_MM} mm
+/gate/target/vis/forceSolid
+/gate/target/vis/setColor yellow
+/gate/target/attachPhantomSD

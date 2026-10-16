@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.1",
+  "project": {
+    "name": "tagged_511keV_backscatter",
+    "baseline_id": "hardware_response_20260731",
+    "coordinate_convention": "+z points from object toward detectors; concrete top surface is z=0 mm",
+    "gate_target": "GATE 9.4.1 / Geant4 11.3.0, verified on vGate-9.4.1"
+  },
+  "simulation": {
+    "primary_events": 1000000,
+    "source_activity_Bq": 1000000,
+    "simultaneous_source_count": 1,
+    "random_engine": "JamesRandom",
+    "random_seed": 24061873,
+    "incident_energy_keV": 511.0,
+    "electron_rest_energy_keV": 511.0,
+    "physics_list": "emlivermore"
+  },
+  "source": {
+    "position_mm": [0.0, 0.0, 17.5],
+    "type": "backtoback",
+    "theta_range_deg": [0.0, 45.0],
+    "phi_range_deg": [0.0, 360.0],
+    "catalog_model": "GNa2.M03.64",
+    "nominal_activity_Bq_per_source": 1000000,
+    "inventory_quantity": 2,
+    "capsule_outer_diameter_mm": 25.4,
+    "capsule_height_mm": 6.4,
+    "active_part_diameter_mm": 0.3,
+    "production_period_weeks": 8,
+    "radionuclide_status": "not_explicitly_confirmed_from_the_supplied_table",
+    "transport_model_status": "ideal_back_to_back_511_keV; finite active part and capsule materials are not yet applied in GATE"
+  },
+  "detectors": {
+    "d1": {
+      "role": "backscatter_imaging_detector",
+      "gate_volume": "BSdetector",
+      "root_tree": "Hits_BSdetector",
+      "material": "GAGG",
+      "density_g_cm3": 6.63,
+      "shape": "annular_cylinder",
+      "center_z_mm": 17.5,
+      "thickness_mm": 15.0,
+      "radius_mm": [20.0, 200.0],
+      "energy_response": {
+        "model": "gaussian_sqrt_energy",
+        "fwhm_fraction_at_511": 0.08,
+        "reference_energy_keV": 511.0,
+        "meaning": "FWHM divided by peak energy"
+      },
+      "position_response": {
+        "model": "voxel_center_quantization_global_xyz",
+        "resolution_mm": [1.55, 1.55, 5.0],
+        "interpretation": "treated as readout voxel size pending confirmation that the supplied values are not Gaussian FWHM"
+      }
+    },
+    "d2": {
+      "role": "tagging_collimation_detector",
+      "gate_volume": "crystal",
+      "root_tree": "Hits_crystal",
+      "material": "GAGG",
+      "density_g_cm3": 6.63,
+      "array": [50, 50, 1],
+      "crystal_size_mm": [0.93, 0.93, 20.0],
+      "pitch_mm": [1.0, 1.0, 0.0],
+      "center_z_mm": 60.0,
+      "envelope_half_width_mm": 25.0,
+      "energy_response": {
+        "model": "gaussian_sqrt_energy",
+        "fwhm_fraction_at_511": 0.12,
+        "reference_energy_keV": 511.0,
+        "meaning": "FWHM divided by peak energy"
+      },
+      "position_response": {
+        "model": "voxel_center_quantization_global_xyz",
+        "resolution_mm": [1.0, 1.0, 2.5],
+        "interpretation": "treated as readout voxel size pending confirmation that the supplied values are not Gaussian FWHM"
+      }
+    }
+  },
+  "phantom": {
+    "name": "concrete",
+    "material": "Concrete",
+    "size_mm": [500.0, 500.0, 100.0],
+    "center_mm": [0.0, 0.0, -50.0],
+    "z_interval_mm": [-100.0, 0.0],
+    "phantom_sd": true,
+    "truth_actor": "TruthConcrete"
+  },
+  "selection": {
+    "coincidence_window_ns": 10.0,
+    "d1_energy_window_keV": [170.33, 255.5],
+    "d2_energy_window_keV": [400.0, 600.0],
+    "d1_radius_mm": [20.0, 200.0],
+    "d2_half_width_mm": 25.0,
+    "incident_angle_deg": [0.0, 45.0],
+    "scatter_angle_deg": [90.0, 180.0],
+    "require_different_primary_photons": true,
+    "phantom_truth_volume_contains": "concrete",
+    "phantom_truth_policy": "ignore"
+  },
+  "reconstruction": {
+    "path_length_mm": [1.0, 280.0],
+    "electronics_blur_enabled": true,
+    "position_readout_enabled": true,
+    "response_application_order": "event_sum -> detector response -> observable selection -> closed-form reconstruction",
+    "notation": {
+      "d2_tag_measurement": "E1, X1, t1",
+      "d1_backscatter_measurement": "E2, X2, t2"
+    }
+  },
+  "sweep_grid": {
+    "d1_energy_windows_keV": [
+      [160.0, 270.0],
+      [170.33, 255.5],
+      [180.0, 250.0],
+      [190.0, 240.0]
+    ],
+    "d2_energy_windows_keV": [
+      [0.0, 600.0],
+      [400.0, 600.0],
+      [450.0, 560.0],
+      [480.0, 540.0]
+    ],
+    "incident_angle_max_deg": [10.0, 20.0, 30.0, 37.5, 45.0],
+    "scatter_angle_min_deg": [90.0, 100.0, 110.0, 120.0, 130.0, 140.0],
+    "d1_radius_max_mm": [75.0, 100.0, 125.0, 150.0, 175.0, 200.0],
+    "d1_azimuth_sector_count": [1, 2, 4, 8],
+    "d2_region": ["all", "center_10mm", "center_20mm", "quadrants", "rings"]
+  }
+}

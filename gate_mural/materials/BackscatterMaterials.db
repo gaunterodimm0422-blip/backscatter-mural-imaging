@@ -1,0 +1,147 @@
+[Elements]
+Hydrogen:   S= H  ; Z=  1. ; A=   1.01     g/mole
+Carbon:     S= C  ; Z=  6. ; A=  12.011    g/mole
+Nitrogen:   S= N  ; Z=  7. ; A=  14.007    g/mole
+Oxygen:     S= O  ; Z=  8. ; A=  16.00     g/mole
+Sodium:     S= Na ; Z= 11. ; A=  22.99     g/mole
+Magnesium:  S= Mg ; Z= 12. ; A=  24.305    g/mole
+Aluminium:  S= Al ; Z= 13. ; A=  26.981539 g/mole
+Silicon:    S= Si ; Z= 14. ; A=  28.09     g/mole
+Sulfur:     S= S  ; Z= 16. ; A=  32.066    g/mole
+Potassium:  S= K  ; Z= 19. ; A=  39.098    g/mole
+Argon:      S= Ar ; Z= 18. ; A=  39.948    g/mole
+Calcium:    S= Ca ; Z= 20. ; A=  40.08     g/mole
+Iron:       S= Fe ; Z= 26. ; A=  55.845    g/mole
+Gallium:    S= Ga ; Z= 31. ; A=  69.723    g/mole
+Gadolinium: S= Gd ; Z= 64. ; A= 157.25     g/mole
+
+[Materials]
+Vacuum: d=0.000001 mg/cm3 ; n=1
+    +el: name=Hydrogen ; n=1
+
+Concrete: d=2.35 g/cm3 ; n=10 ; state=solid
+    +el: name=Hydrogen  ; f=0.0527
+    +el: name=Oxygen    ; f=0.4746
+    +el: name=Sodium    ; f=0.0162
+    +el: name=Magnesium ; f=0.0024
+    +el: name=Aluminium ; f=0.0433
+    +el: name=Silicon   ; f=0.3008
+    +el: name=Sulfur    ; f=0.0013
+    +el: name=Potassium ; f=0.0182
+    +el: name=Calcium   ; f=0.0787
+    +el: name=Iron      ; f=0.0118
+
+Water: d=1.00 g/cm3 ; n=2 ; state=liquid
+    +el: name=Hydrogen ; n=2
+    +el: name=Oxygen   ; n=1
+
+Iron: d=7.874 g/cm3 ; n=1 ; state=solid
+    +el: name=Iron ; n=1
+
+GAGG: d=6.63 g/cm3 ; n=4 ; state=solid
+    +el: name=Gadolinium ; n=3
+    +el: name=Aluminium  ; n=2
+    +el: name=Gallium    ; n=3
+    +el: name=Oxygen     ; n=12
+
+# ---------------------------------------------------------------------------
+# 壁画体模材料（2026-09-10 新增）
+#
+# 511 keV 下康普顿散射占绝对主导，每克的散射截面正比于 <Z/A>，
+# 而硅酸盐-碳酸盐混合物的 <Z/A> 都在 0.50 附近（本文件里 Concrete 是 0.502，
+# MuralGround 是 0.5026，Conglomerate 是 0.4997）。
+# 所以**决定信号的是密度，不是具体化学成分**；下面的元素配比是合理代表，
+# 不是对某一个洞窟的实测化学分析。密度按低/中/高三档给出，便于做敏感性扫描。
+#
+# 地仗层元素配比由典型黄土氧化物组成折算：
+#   SiO2 58% / Al2O3 12% / CaO 8% / Fe2O3 4.7% / MgO 2.4% / K2O 2.4%
+#   / Na2O 1.6%，余约 10.9% 计为结合水与有机质。
+# 颗粒组成参照莫高窟第 55 窟底层壁画粗泥层：粘粒 21.25% / 粉粒 43.97% / 砂粒 34.79%
+#   （《石窟寺壁画地仗制作材质工艺研究进展》）。
+# 加筋材料（粗泥层麦秸秆 3~5%，细泥层麻 <=1%）质量占比小，且 <Z/A> 与土接近，
+#   未单独建模，已并入基体。
+#
+# 砂砾岩（支撑体）矿物组成参照玉门组实测：
+#   石英 38~47% / 方解石 10~19% / 钠长石 13~19% / 白云石 6~16%
+#   / 绿泥石 3~6% / 白云母 2~4%，钙质-硅钙质胶结
+#   （《敦煌莫高窟玉门组砂砾岩风化特征研究》）。
+# 密度未在可获取的文献中查到实测值，按胶结砂砾岩常见范围取 2.20 g/cm3，
+#   低/高档 2.00 / 2.40 —— **这是取值，不是实测，必须在报告里如实标注**。
+# ---------------------------------------------------------------------------
+
+MuralGround: d=1.70 g/cm3 ; n=9 ; state=solid
+    +el: name=Hydrogen  ; f=0.0122
+    +el: name=Oxygen    ; f=0.5168
+    +el: name=Sodium    ; f=0.0119
+    +el: name=Magnesium ; f=0.0145
+    +el: name=Aluminium ; f=0.0635
+    +el: name=Silicon   ; f=0.2711
+    +el: name=Potassium ; f=0.0199
+    +el: name=Calcium   ; f=0.0572
+    +el: name=Iron      ; f=0.0329
+
+MuralGroundLow: d=1.55 g/cm3 ; n=9 ; state=solid
+    +el: name=Hydrogen  ; f=0.0122
+    +el: name=Oxygen    ; f=0.5168
+    +el: name=Sodium    ; f=0.0119
+    +el: name=Magnesium ; f=0.0145
+    +el: name=Aluminium ; f=0.0635
+    +el: name=Silicon   ; f=0.2711
+    +el: name=Potassium ; f=0.0199
+    +el: name=Calcium   ; f=0.0572
+    +el: name=Iron      ; f=0.0329
+
+MuralGroundHigh: d=1.85 g/cm3 ; n=9 ; state=solid
+    +el: name=Hydrogen  ; f=0.0122
+    +el: name=Oxygen    ; f=0.5168
+    +el: name=Sodium    ; f=0.0119
+    +el: name=Magnesium ; f=0.0145
+    +el: name=Aluminium ; f=0.0635
+    +el: name=Silicon   ; f=0.2711
+    +el: name=Potassium ; f=0.0199
+    +el: name=Calcium   ; f=0.0572
+    +el: name=Iron      ; f=0.0329
+
+Conglomerate: d=2.20 g/cm3 ; n=10 ; state=solid
+    +el: name=Hydrogen  ; f=0.0010
+    +el: name=Carbon    ; f=0.0310
+    +el: name=Oxygen    ; f=0.5000
+    +el: name=Sodium    ; f=0.0158
+    +el: name=Magnesium ; f=0.0162
+    +el: name=Aluminium ; f=0.0325
+    +el: name=Silicon   ; f=0.3076
+    +el: name=Potassium ; f=0.0060
+    +el: name=Calcium   ; f=0.0818
+    +el: name=Iron      ; f=0.0081
+
+ConglomerateLow: d=2.00 g/cm3 ; n=10 ; state=solid
+    +el: name=Hydrogen  ; f=0.0010
+    +el: name=Carbon    ; f=0.0310
+    +el: name=Oxygen    ; f=0.5000
+    +el: name=Sodium    ; f=0.0158
+    +el: name=Magnesium ; f=0.0162
+    +el: name=Aluminium ; f=0.0325
+    +el: name=Silicon   ; f=0.3076
+    +el: name=Potassium ; f=0.0060
+    +el: name=Calcium   ; f=0.0818
+    +el: name=Iron      ; f=0.0081
+
+ConglomerateHigh: d=2.40 g/cm3 ; n=10 ; state=solid
+    +el: name=Hydrogen  ; f=0.0010
+    +el: name=Carbon    ; f=0.0310
+    +el: name=Oxygen    ; f=0.5000
+    +el: name=Sodium    ; f=0.0158
+    +el: name=Magnesium ; f=0.0162
+    +el: name=Aluminium ; f=0.0325
+    +el: name=Silicon   ; f=0.3076
+    +el: name=Potassium ; f=0.0060
+    +el: name=Calcium   ; f=0.0818
+    +el: name=Iron      ; f=0.0081
+
+# 干空气（20 C, 1 atm）。空鼓里是空气不是真空，但两者对 511 keV 的散射差别
+# 在千分之一量级；用 Air 只是为了物理上更诚实。
+Air: d=1.205 mg/cm3 ; n=4 ; state=gas
+    +el: name=Carbon   ; f=0.000124
+    +el: name=Nitrogen ; f=0.755268
+    +el: name=Oxygen   ; f=0.231781
+    +el: name=Argon    ; f=0.012827

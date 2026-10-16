@@ -1,0 +1,250 @@
+{
+  "schema_version": "1.1",
+  "project": {
+    "name": "tagged_511keV_backscatter_mural_void",
+    "baseline_id": "mural_void_t10_depth30_20260910",
+    "coordinate_convention": "+z points from the target toward the detectors; z=0 mm is the system axial reference plane",
+    "gate_target": "GATE 9.4.2 / Geant4 11.4.0（远控机）；旧数据为 9.4.1 / 11.3.0，跨版本比绝对量需注明",
+    "purpose": "壁画地仗层空鼓的检出与深度定位。探测器与判选与细杆基线完全一致，只换体模。"
+  },
+  "simulation": {
+    "primary_events": 2000000,
+    "source_activity_Bq": 1000000,
+    "random_engine": "JamesRandom",
+    "random_seed": 24091011,
+    "incident_energy_keV": 511.0,
+    "electron_rest_energy_keV": 511.0,
+    "physics_list": "emlivermore",
+    "simultaneous_source_count": 1
+  },
+  "source": {
+    "position_mm": [
+      0.0,
+      0.0,
+      17.5
+    ],
+    "type": "backtoback",
+    "theta_range_deg": [
+      0.0,
+      45.0
+    ],
+    "phi_range_deg": [
+      0.0,
+      360.0
+    ],
+    "catalog_model": "GNa2.M03.64",
+    "nominal_activity_Bq_per_source": 1000000,
+    "inventory_quantity": 2,
+    "capsule_outer_diameter_mm": 25.4,
+    "capsule_height_mm": 6.4,
+    "active_part_diameter_mm": 0.3,
+    "production_period_weeks": 8,
+    "radionuclide_status": "not_explicitly_confirmed_from_the_supplied_table",
+    "transport_model_status": "ideal back-to-back 511 keV; finite active part and capsule materials are not yet applied in GATE"
+  },
+  "detectors": {
+    "d1": {
+      "role": "backscatter_imaging_detector",
+      "gate_volume": "BSdetector",
+      "root_tree": "Hits_BSdetector",
+      "material": "GAGG",
+      "density_g_cm3": 6.63,
+      "shape": "annular_cylinder",
+      "center_z_mm": 17.5,
+      "thickness_mm": 15.0,
+      "radius_mm": [
+        20.0,
+        200.0
+      ],
+      "energy_response": {
+        "model": "gaussian_sqrt_energy",
+        "fwhm_fraction_at_511": 0.08,
+        "reference_energy_keV": 511.0,
+        "meaning": "FWHM divided by peak energy"
+      },
+      "position_response": {
+        "model": "voxel_center_quantization_global_xyz",
+        "resolution_mm": [
+          1.55,
+          1.55,
+          5.0
+        ],
+        "interpretation": "treated as readout voxel size pending confirmation that the supplied values are not Gaussian FWHM"
+      }
+    },
+    "d2": {
+      "role": "tagging_collimation_detector",
+      "gate_volume": "crystal",
+      "root_tree": "Hits_crystal",
+      "material": "GAGG",
+      "density_g_cm3": 6.63,
+      "array": [
+        50,
+        50,
+        1
+      ],
+      "crystal_size_mm": [
+        0.93,
+        0.93,
+        20.0
+      ],
+      "pitch_mm": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "center_z_mm": 60.0,
+      "envelope_half_width_mm": 25.0,
+      "energy_response": {
+        "model": "gaussian_sqrt_energy",
+        "fwhm_fraction_at_511": 0.12,
+        "reference_energy_keV": 511.0,
+        "meaning": "FWHM divided by peak energy"
+      },
+      "position_response": {
+        "model": "voxel_center_quantization_global_xyz",
+        "resolution_mm": [
+          1.0,
+          1.0,
+          2.5
+        ],
+        "interpretation": "treated as readout voxel size pending confirmation that the supplied values are not Gaussian FWHM"
+      }
+    }
+  },
+  "phantom": {
+    "name": "mural",
+    "gate_volume": "ground_coarse",
+    "gate_macro": "phantom_mural.mac",
+    "material": "MuralGround",
+    "target_kind": "mural_void",
+    "size_mm": [
+      500.0,
+      500.0,
+      140.0
+    ],
+    "center_mm": [
+      0.0,
+      0.0,
+      -70.0
+    ],
+    "z_interval_mm": [
+      -140.0,
+      0.0
+    ],
+    "environment_material": "Vacuum",
+    "measurement_role": "void_detection_and_depth_localization",
+    "phantom_sd": true,
+    "truth_actor": "TruthMural",
+    "layers": [
+      {
+        "name": "ground_fine",
+        "role": "细泥层（麻泥）",
+        "thickness_mm": 5.0,
+        "z_interval_mm": [
+          -5.0,
+          0.0
+        ],
+        "material": "MuralGround",
+        "density_g_cm3": 1.7
+      },
+      {
+        "name": "ground_coarse",
+        "role": "粗泥层（草泥）",
+        "thickness_mm": 35.0,
+        "z_interval_mm": [
+          -40.0,
+          -5.0
+        ],
+        "material": "MuralGround",
+        "density_g_cm3": 1.7
+      },
+      {
+        "name": "support",
+        "role": "支撑体（砂砾岩）",
+        "thickness_mm": 100.0,
+        "z_interval_mm": [
+          -140.0,
+          -40.0
+        ],
+        "material": "Conglomerate",
+        "density_g_cm3": 2.2
+      }
+    ],
+    "void": {
+      "material": "Air",
+      "thickness_mm": 10.0,
+      "depth_mm": 30.0,
+      "z_interval_mm": [
+        -40.0,
+        -30.0
+      ],
+      "lateral_mm": [
+        120.0,
+        120.0
+      ],
+      "placement": "贴地仗/支撑体界面，粗泥层的子体积",
+      "reference_x_mm": 200.0,
+      "reference_note": "参照跑把空鼓挪到 x=200 mm（出视野、仍在体模内），其余完全相同",
+      "areal_deficit_g_cm2": 1.7
+    },
+    "layer_sources": {
+      "细泥层 0.5 cm / 粗泥层 3.5±0.5 cm（莫高窟、榆林窟、西千佛洞）": "石窟寺壁画地仗制作材质工艺研究进展",
+      "粗泥层颗粒组成 粘粒21.25/粉粒43.97/砂粒34.79（莫高窟第55窟底层）": "同上",
+      "砂砾岩矿物组成（玉门组）": "敦煌莫高窟玉门组砂砾岩风化特征研究",
+      "空鼓深度一般 2~5 cm、试件空隙 5/18/23 mm": "Detection of Delamination in Wall Paintings by GPR, IntechOpen",
+      "两种材料的密度 1.70 / 2.20 g/cm3": "取值，非实测。低/高档见 BackscatterMaterials.db"
+    }
+  },
+  "selection": {
+    "coincidence_window_ns": 10.0,
+    "d1_energy_window_keV": [
+      180.0,
+      250.0
+    ],
+    "d2_energy_window_keV": [
+      400.0,
+      600.0
+    ],
+    "d1_radius_mm": [
+      20.0,
+      200.0
+    ],
+    "d2_half_width_mm": 25.0,
+    "incident_angle_deg": [
+      0.0,
+      45.0
+    ],
+    "scatter_angle_deg": [
+      90.0,
+      180.0
+    ],
+    "require_different_primary_photons": true,
+    "phantom_truth_volume_contains": "ground",
+    "phantom_truth_policy": "ignore"
+  },
+  "reconstruction": {
+    "path_length_mm": [
+      1.0,
+      280.0
+    ],
+    "electronics_blur_enabled": true,
+    "position_readout_enabled": true,
+    "response_application_order": "event sum -> detector response -> observable selection -> closed-form reconstruction",
+    "notation": {
+      "d2_tag_measurement": "E1, X1, t1",
+      "d1_backscatter_measurement": "E2, X2, t2"
+    }
+  },
+  "observables": {
+    "primary": "depth_profile_ratio_step",
+    "note": "观测量是\"空鼓/参照的重建深度剖面比值台阶\"，不是\"在空鼓深度找亏损\"。2026-09-10 事例级蒙卡预估：空鼓深度处的重建亏损只有 2~3%（被 38 mm 单视角深度分辨抹平，且被下方透射增强填回），而 45 mm 以深比值升到 1.03~1.25。ratio = exp(mu_in*dSigma)*exp(mu_out*dSigma/cos_xi)，dSigma = 空鼓面密度亏损，因此台阶位置给深度、台阶高度给厚度。",
+    "frozen_criteria": [
+      "45 mm 以深比值的合并显著性 >= 5 sigma；负对照（参照对参照）< 3 sigma",
+      "比值偏离 1 的台阶位置与空鼓上表面真值之差 <= 10 mm（单位姿）",
+      "由渐近比值反解的面密度亏损与真值之差 <= 30%",
+      "负对照不得自己通过前两条"
+    ],
+    "frozen_before_any_gate_data": true
+  }
+}

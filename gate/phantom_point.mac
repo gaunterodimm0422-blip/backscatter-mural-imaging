@@ -1,0 +1,12 @@
+# 3D PSF target: a small concrete cylinder centred on the source axis.
+
+/gate/world/daughters/name target
+/gate/world/daughters/insert cylinder
+/gate/target/geometry/setRmin 0 mm
+/gate/target/geometry/setRmax {TARGET_RADIUS_MM} mm
+/gate/target/geometry/setHeight {TARGET_THICKNESS_MM} mm
+/gate/target/setMaterial {TARGET_MATERIAL}
+/gate/target/placement/setTranslation 0 0 -{TARGET_DEPTH_MM} mm
+/gate/target/vis/forceSolid
+/gate/target/vis/setColor yellow
+/gate/target/attachPhantomSD

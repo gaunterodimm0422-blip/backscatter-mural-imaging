@@ -1,0 +1,18 @@
+# ---------------------------------------------------------------------------
+# Stage-1 baseline phantom: homogeneous concrete slab.
+# Top surface z=0 mm, bottom z=-100 mm.
+# ---------------------------------------------------------------------------
+
+/gate/world/daughters/name concrete
+/gate/world/daughters/insert box
+/gate/concrete/geometry/setXLength 500 mm
+/gate/concrete/geometry/setYLength 500 mm
+/gate/concrete/geometry/setZLength 100 mm
+/gate/concrete/setMaterial Concrete
+/gate/concrete/placement/setTranslation 0 0 -50 mm
+/gate/concrete/vis/forceSolid
+/gate/concrete/vis/setColor grey
+
+# Required for nPhantomCompton, nPhantomRayleigh and comptVolName in detector Hits.
+/gate/concrete/attachPhantomSD
+

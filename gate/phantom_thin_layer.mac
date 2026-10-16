@@ -1,0 +1,13 @@
+# Axial PSF target: a laterally broad, thin concrete sheet.
+# TARGET_DEPTH_MM is positive depth below the z=0 surface convention.
+
+/gate/world/daughters/name target
+/gate/world/daughters/insert box
+/gate/target/geometry/setXLength {TARGET_LATERAL_MM} mm
+/gate/target/geometry/setYLength {TARGET_LATERAL_MM} mm
+/gate/target/geometry/setZLength {TARGET_THICKNESS_MM} mm
+/gate/target/setMaterial {TARGET_MATERIAL}
+/gate/target/placement/setTranslation 0 0 -{TARGET_DEPTH_MM} mm
+/gate/target/vis/forceSolid
+/gate/target/vis/setColor yellow
+/gate/target/attachPhantomSD

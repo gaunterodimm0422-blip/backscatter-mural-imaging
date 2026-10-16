@@ -1,0 +1,16 @@
+stage,experiment_id,phantom,variable,values,primaries_per_run,primary_metric,status
+0,smoke_concrete,concrete_100mm,macro_and_schema,baseline,20000,ROOT schema and truth availability,completed
+1,baseline_concrete,concrete_100mm,repeatability,seeds 24061873 and 24061874,2000000,spectra depth profile and event efficiency,completed and pre-registered checks passed
+1,concrete_depth_profile,concrete_100mm,true_first_Compton_depth_mm,10 mm bins,2000000,depth sensitivity and axial-error FWHM,completed
+2,intrinsic_axial_psf,isolated_thin_concrete_sheet,axial_distance_mm,"10;30;50;70;90",2000000,intrinsic axial FWHM and bias without overburden,completed
+2,transverse_psf,concrete_rod,rod_width_mm,"1;2;5",5000000,FWHM x-y and localization bias,completed; 1 mm result requires additional independent-seed statistics
+2,double_rod,dual_concrete_rods,separation_mm,"5;10;15",5000000,resolvability and valley-to-peak ratio,"completed; 5 mm borderline, 10/15 mm bandwidth-robust; 20/30 stopped adaptively"
+2,edge_mtf,concrete_half_plane,depth_mm,"30;70",2000000,MTF10 and MTF50,"completed; count-aware erf/Gaussian model, one seed"
+3,concrete_void_pilot,concrete_with_air_voids,void_diameter_mm_by_depth,"10;20 at 30;60",2000000,known-location contrast and CNR,"completed: CNR 2.38;1.42;9.13;0.98"
+3,concrete_void_detection,concrete_with_air_voids,diameter_depth_seed_location,"12-case qualification at 1m each; formal expansion later",1000000,blinded score localization and false alarms,"qualification passed: 6/6 detected; 0/6 false alarms; not final probability"
+4,posthoc_filters,baseline_or_phantom_data,energy_angle_radius_region,configs/baseline.json sweep_grid,0,Pareto resolution-CNR-efficiency,completed on thin30 and concrete2m
+5,d1_rerun,selected_phantoms,d1_outer_radius_mm,"150;175",2000000,confirm post-hoc radius approximation,completed and pre-registered checks passed
+6,materials,same_standard_phantom,material,"Concrete;Water;Iron",2000000,axial-response and sensitivity comparison,formal configs ready
+6,electronics_sensitivity,existing_thin30_and_concrete,energy_fwhm_percent_at_511,"0;5;10;15",0,efficiency purity and axial-error sensitivity,completed as hypothetical scenarios
+6,d2_partial_energy_acceptance,existing_thin30_and_concrete,d2_lower_energy_threshold_keV,"1;20;50;100;150;200;250;300;350;400;450 with 560 upper",0,signal sensitivity purity and axial response,"completed; partial-energy events add signal in ideal simulation; hardware threshold still required"
+6,position_readout_sensitivity,existing_thin30_and_concrete,D1_xy_FWHM_and_DOI,"ideal; no DOI plus 0;2;5;10 mm D1 xy FWHM",0,efficiency purity and axial-response sensitivity,completed as hypothetical scenarios

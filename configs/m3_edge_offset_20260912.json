@@ -1,0 +1,424 @@
+{
+ "schema_version": "1.1",
+ "project": {
+  "name": "tagged_511keV_backscatter_mural_void",
+  "baseline_id": "m3_head_v2_edge_offset_20260912",
+  "coordinate_convention": "+z points from the target toward the detectors; z=0 mm is the system axial reference plane",
+  "gate_target": "GATE 9.4.2 / Geant4 11.4.0（远控机）；旧数据为 9.4.1 / 11.3.0，跨版本比绝对量需注明",
+  "purpose": "M3：在新探测头构型（发射锥 35°、D1 内半径 12.5 / 外半径 100 / 厚 10 / 中面 z 7.5、D2 下表面 z 42.5）下重跑 M2 的空鼓横向边界定位。体模、源位置、能量窗、符合窗、判选链条、重建算法全部与 M2 逐字相同，只改探测头几何。"
+ },
+ "simulation": {
+  "primary_events": 4000000,
+  "source_activity_Bq": 1000000,
+  "random_engine": "JamesRandom",
+  "random_seed": 24091311,
+  "incident_energy_keV": 511.0,
+  "electron_rest_energy_keV": 511.0,
+  "physics_list": "emlivermore",
+  "simultaneous_source_count": 1
+ },
+ "source": {
+  "position_mm": [
+   0.0,
+   0.0,
+   17.5
+  ],
+  "type": "backtoback",
+  "theta_range_deg": [
+   0.0,
+   35.0
+  ],
+  "phi_range_deg": [
+   0.0,
+   360.0
+  ],
+  "catalog_model": "GNa2.M03.64",
+  "nominal_activity_Bq_per_source": 1000000,
+  "inventory_quantity": 2,
+  "capsule_outer_diameter_mm": 25.4,
+  "capsule_height_mm": 6.4,
+  "active_part_diameter_mm": 0.3,
+  "production_period_weeks": 8,
+  "radionuclide_status": "not_explicitly_confirmed_from_the_supplied_table",
+  "transport_model_status": "ideal back-to-back 511 keV; finite active part and capsule materials are not yet applied in GATE",
+  "solid_angle_sr": 1.1363,
+  "solid_angle_note": "theta_range 是抽样设置不是硬件。真实 Na-22 源各向同性，45°→35° 的立体角比 = 0.617，所以同样的初级粒子数代表更多的真实湮没；跨构型比较计数率必须按此归一。"
+ },
+ "detectors": {
+  "d1": {
+   "role": "backscatter_imaging_detector",
+   "gate_volume": "BSdetector",
+   "root_tree": "Hits_BSdetector",
+   "material": "GAGG",
+   "density_g_cm3": 6.63,
+   "shape": "annular_cylinder",
+   "center_z_mm": 7.5,
+   "thickness_mm": 10.0,
+   "radius_mm": [
+    12.5,
+    100.0
+   ],
+   "energy_response": {
+    "model": "gaussian_sqrt_energy",
+    "fwhm_fraction_at_511": 0.08,
+    "reference_energy_keV": 511.0,
+    "meaning": "FWHM divided by peak energy"
+   },
+   "position_response": {
+    "model": "voxel_center_quantization_global_xyz",
+    "resolution_mm": [
+     1.55,
+     1.55,
+     5.0
+    ],
+    "interpretation": "treated as readout voxel size pending confirmation that the supplied values are not Gaussian FWHM"
+   },
+   "z_interval_mm": [
+    2.5,
+    12.5
+   ],
+   "geometry_note": "内半径 12.5 mm 的下限由源直照约束给出：(17.5 − 2.5) × tan35° = 10.50 mm，余量 +2.00 mm。**这个数只有在发射锥 35° 且 D1 下表面压到 2.5 mm 时才成立。**"
+  },
+  "d2": {
+   "role": "tagging_collimation_detector",
+   "gate_volume": "crystal",
+   "root_tree": "Hits_crystal",
+   "material": "GAGG",
+   "density_g_cm3": 6.63,
+   "array": [
+    50,
+    50,
+    1
+   ],
+   "crystal_size_mm": [
+    0.93,
+    0.93,
+    20.0
+   ],
+   "pitch_mm": [
+    1.0,
+    1.0,
+    0.0
+   ],
+   "center_z_mm": 52.5,
+   "envelope_half_width_mm": 25.0,
+   "energy_response": {
+    "model": "gaussian_sqrt_energy",
+    "fwhm_fraction_at_511": 0.12,
+    "reference_energy_keV": 511.0,
+    "meaning": "FWHM divided by peak energy"
+   },
+   "position_response": {
+    "model": "voxel_center_quantization_global_xyz",
+    "resolution_mm": [
+     1.0,
+     1.0,
+     2.5
+    ],
+    "interpretation": "treated as readout voxel size pending confirmation that the supplied values are not Gaussian FWHM"
+   },
+   "z_interval_mm": [
+    42.5,
+    62.5
+   ],
+   "geometry_note": "源到 D2 中面 35.0 mm，半宽 25 mm，边缘接受半角 atan(25/35) = 35.5°，与 35° 发射锥基本重合——锥正好填满 D2 的内切圆，四角不被照到。"
+  }
+ },
+ "phantom": {
+  "name": "mural",
+  "gate_volume": "ground_coarse",
+  "gate_macro": "phantom_mural.mac",
+  "material": "MuralGround",
+  "target_kind": "mural_void",
+  "size_mm": [
+   500.0,
+   500.0,
+   140.0
+  ],
+  "center_mm": [
+   0.0,
+   0.0,
+   -70.0
+  ],
+  "z_interval_mm": [
+   -140.0,
+   0.0
+  ],
+  "environment_material": "Vacuum",
+  "measurement_role": "void_lateral_edge_localization",
+  "phantom_sd": true,
+  "truth_actor": "TruthMural",
+  "layers": [
+   {
+    "name": "ground_fine",
+    "role": "细泥层（麻泥）",
+    "thickness_mm": 5.0,
+    "z_interval_mm": [
+     -5.0,
+     0.0
+    ],
+    "material": "MuralGround",
+    "density_g_cm3": 1.7
+   },
+   {
+    "name": "ground_coarse",
+    "role": "粗泥层（草泥）",
+    "thickness_mm": 35.0,
+    "z_interval_mm": [
+     -40.0,
+     -5.0
+    ],
+    "material": "MuralGround",
+    "density_g_cm3": 1.7
+   },
+   {
+    "name": "support",
+    "role": "支撑体（砂砾岩）",
+    "thickness_mm": 100.0,
+    "z_interval_mm": [
+     -140.0,
+     -40.0
+    ],
+    "material": "Conglomerate",
+    "density_g_cm3": 2.2
+   }
+  ],
+  "void": {
+   "material": "Air",
+   "thickness_mm": 20.0,
+   "depth_mm": 20.0,
+   "z_interval_mm": [
+    -40.0,
+    -20.0
+   ],
+   "shape": "half_plane",
+   "x_interval_mm": [
+    -23.0,
+    227.0
+   ],
+   "y_interval_mm": [
+    -200.0,
+    200.0
+   ],
+   "edge_x_mm": -23.0,
+   "edge_note": "空鼓左边界 x = -15 mm，正好与探测头轴心 L = -15 mm 重合，左右视野对称",
+   "placement": "下表面贴地仗/支撑体界面；空鼓 z ∈ [-40,-20] 完整落在粗泥层 z ∈ [-40,-5] 之内",
+   "reference_config": {
+    "ref_main": "m3_ref_t20_L-15_4m_seed24091302",
+    "note": "阶段 a 与阶段 b 的四个档共用同一个参照场；跑 b 之前 a 必须已经跑完"
+   },
+   "areal_deficit_g_cm2": 3.4,
+   "thickness_rationale": "先用信号最强的一档证明方法可行，再往薄了扫，与 M1 stage a 先跑 10 mm 的逻辑一致。2026-09-11 的重抽扫描（每格 250 次）：10 mm + 200 万事例在对比度打对折时检出率只有 6%，打三折 5%，加到 800 万也只有 66%；20 mm + 400 万在三档稀释下检出率都是 100%，边界 sigma 分别 0.25 / 0.76 / 2.0 mm。加厚比加事例便宜：信息量涨 8.4 倍而不是 4 倍。文献依据：壁画空鼓深度一般 2~5 cm，GPR 实验室试件做过 5 / 18 / 23 mm 三档。",
+   "macro_parameters": {
+    "VOID_XLEN_MM": 250.0,
+    "VOID_X_MM": 102.0,
+    "VOID_YLEN_MM": 400.0
+   }
+  },
+  "layer_sources": {
+   "细泥层 0.5 cm / 粗泥层 3.5±0.5 cm（莫高窟、榆林窟、西千佛洞）": "石窟寺壁画地仗制作材质工艺研究进展",
+   "粗泥层颗粒组成 粘粒21.25/粉粒43.97/砂粒34.79（莫高窟第55窟底层）": "同上",
+   "砂砾岩矿物组成（玉门组）": "敦煌莫高窟玉门组砂砾岩风化特征研究",
+   "空鼓深度一般 2~5 cm、试件空隙 5/18/23 mm": "Detection of Delamination in Wall Paintings by GPR, IntechOpen",
+   "两种材料的密度 1.70 / 2.20 g/cm3": "取值，非实测。低/高档见 BackscatterMaterials.db"
+  }
+ },
+ "selection": {
+  "coincidence_window_ns": 10.0,
+  "d1_energy_window_keV": [
+   180.0,
+   250.0
+  ],
+  "d2_energy_window_keV": [
+   400.0,
+   600.0
+  ],
+  "d1_radius_mm": [
+   12.5,
+   100.0
+  ],
+  "d2_half_width_mm": 25.0,
+  "incident_angle_deg": [
+   0.0,
+   35.0
+  ],
+  "scatter_angle_deg": [
+   90.0,
+   180.0
+  ],
+  "require_different_primary_photons": true,
+  "phantom_truth_volume_contains": "ground",
+  "phantom_truth_policy": "ignore",
+  "geometry_consistency_note": "d1_radius_mm 与 incident_angle_deg 必须与几何宏一致，否则判选会去切一块本来就不存在的区域，或放进几何上不可能的事例。"
+ },
+ "reconstruction": {
+  "path_length_mm": [
+   1.0,
+   280.0
+  ],
+  "electronics_blur_enabled": true,
+  "position_readout_enabled": true,
+  "response_application_order": "event sum -> detector response -> observable selection -> closed-form reconstruction",
+  "notation": {
+   "d2_tag_measurement": "E1, X1, t1",
+   "d1_backscatter_measurement": "E2, X2, t2"
+  }
+ },
+ "observables": {
+  "primary": "lateral_profile_ratio_edge_multiband",
+  "note": "观测量与估计量与 M2 完全相同，见 scripts/analyze_mural_edge.py。本轮唯一的变量是探测头几何。观测量是“空鼓场/参照场的计数比值随横向 x 的台阶”，按重建深度分带、各带共用同一个边界位置 x_e。2026-09-11 事例级蒙卡（m2_predict.py，空鼓 20 mm 厚）给出形状：0~35 mm 的四个重建深度带对比度 8.1% / 13.6% / 31.4% / 33.3%，边界过渡宽度 1.0 / 0.5 / 1.1 / 2.4 mm，**几乎不糊**；35 mm 以深比值翻号（透射增强），且出射腿斜穿空鼓层时横向跑掉 16~24 mm，边界被抹开（过渡宽度 6.5 / 24.0 / 15.9 mm），**因此深带只用于“有没有”，不参与“边在哪”**。物理原因：空鼓抽掉的是散射体本身，这是 x 的局部效应；本设备横向分辨 3~4 mm、深度分辨约 38 mm，横向信息保真而纵向信息被糊掉，所以要用横向去定位。台阶高度不采用蒙卡值：蒙卡不含多次散射，M1 已实测到它高估对比度，高度由数据自己测。",
+  "depth_bands_mm": [
+   [
+    0,
+    8
+   ],
+   [
+    8,
+    15
+   ],
+   [
+    15,
+    25
+   ],
+   [
+    25,
+    35
+   ]
+  ],
+  "depth_bands_excluded_from_edge_fit_mm": [
+   [
+    35,
+    45
+   ],
+   [
+    45,
+    60
+   ],
+   [
+    60,
+    120
+   ]
+  ],
+  "x_bin_edges_head_frame_mm": {
+   "start": -36.0,
+   "stop": 36.0,
+   "step": 3.0
+  },
+  "y_half_width_mm": 40.0,
+  "min_ref_counts_per_bin": 30,
+  "estimator": "各深度带的比值拟合 A_b*(1 - c_b*Phi((x-x_e)/w))，x_e 与 w 全带共用，A_b 与 c_b 每带自由；对每个箱条件在 n_ref+n_void 上用二项似然，精确计入两边的统计涨落。检验统计量 T = -2lnL(比值在 x 上是常数) + 2lnL(有边界)，零假设分布用蒙卡标定，不用渐近 chi2。",
+  "frozen_criteria": [
+   "1 检出：halfvoid/ref 的 T >= 30（阈值沿用 M2 的 3000 次零假设重抽标定，最大值 28.0）",
+   "2 边界位置：x_e 换算到世界坐标后与真值 -23 mm 之差 <= 10 mm",
+   "3 零假设：ref 随机对半 A/B 的 T < 30",
+   "4 台阶方向：四个深度带的 c_b 全部 > 0",
+   "5 对比度不劣于旧构型：15-25 带 c_b >= 31.9%，25-35 带 c_b >= 26.3%（均为 M2 实测值；蒙卡预言 37.5% 与 44.1%）",
+   "6 计数率两个都要记：(a) 每百万初级粒子选出事例数落在 [15565, 25942]；(b) 换算到每次真实湮没时必须乘立体角比 0.617，预言为 M2 的 0.646 倍。**只报 (a) 会得出“计数率没变”的错误结论。**",
+   "7 视场：ref 场可用的横向箱范围应宽于 M2 的 [-34.5, 34.5] mm（预言 +19%）",
+   "8 标度系数 k（阶段 b，三点带自由截距拟合 u = 0 / -8 / -16）：|k - 0.844| <= 0.09，截距 |b| <= 1 mm，r^2 >= 0.98。方向性预期（报告即可，不作通过/不通过）：k 应大于旧构型实测的 0.797。",
+   "阶段 a 判 1~7，全过才跑阶段 b；阶段 b 判 8。任何一条不过，如实记录不过。"
+  ],
+  "t_threshold": 30.0,
+  "expected_sigma_xe_mm": null,
+  "frozen_before_any_gate_data": true,
+  "t_threshold_calibration": {
+   "method": "从蒙卡底片抽两份无边界数据做泊松重抽，跑完全相同的估计量，统计 T 的分布",
+   "trials": 3000,
+   "split": "1500 次 200 万等效 + 1500 次 400 万等效",
+   "p50": 8.0,
+   "p90": 13.3,
+   "p95": 15.2,
+   "p99": 19.0,
+   "p99_9": 27.2,
+   "max": 28.0,
+   "chosen": 30.0,
+   "note": "阈值取 30，高于 3000 次零假设重抽的最大值 28.0，误报率 < 0.03%；T 的零假设分布与事例数几乎无关（200 万与 400 万的分位数一致），符合似然比统计量的预期"
+  },
+  "expected_performance_4M": {
+   "note": "重抽扫描，每格 250 次，事例数按 M1 实测（200 万初级粒子 -> 29,922 个重建事例）外推",
+   "D=1.00": {
+    "detect_pct": 100,
+    "T_median": 439.2,
+    "sigma_xe_mm": 0.25
+   },
+   "D=0.50": {
+    "detect_pct": 100,
+    "T_median": 101.8,
+    "sigma_xe_mm": 0.76
+   },
+   "D=0.33": {
+    "detect_pct": 100,
+    "T_median": 46.9,
+    "sigma_xe_mm": 2.02
+   },
+   "D_meaning": "把蒙卡对比度乘以 D，用来覆盖“蒙卡不含多次散射、实测对比度可能只有一半甚至三分之一”"
+  },
+  "known_systematics": {
+   "edge_bias_mm": 1.1,
+   "edge_bias_origin": "erf 台阶模型与蒙卡给出的真实过渡形状不完全一致；在纯 erf 合成数据上偏差为 -0.07 ~ +0.21 mm，说明是模型形状失配，不是物理偏差，也不是估计量的错",
+   "edge_bias_handling": "不做修正。判据 2 的阈值是 ±10 mm，1.1 mm 不影响判定，但必须写进报告",
+   "error_bar_coverage": "profile likelihood 的 68% 区间在对比度最低一档（D=0.33）偏小约 25%（报告 1.53 mm vs 实际散布 1.98 mm），更高对比度时一致（0.53 vs 0.48、1.11 vs 1.16）"
+  },
+  "estimator_validation": {
+   "script": "scripts/analyze_mural_edge.py --self-test",
+   "date": "2026-09-11",
+   "synthetic_bias_mm": {
+    "D=1.00": -0.07,
+    "D=0.50": 0.21,
+    "D=0.33": 0.08
+   },
+   "synthetic_spread_mm": {
+    "D=1.00": 0.48,
+    "D=0.50": 1.16,
+    "D=0.33": 1.98
+   },
+   "reported_sigma_mm": {
+    "D=1.00": 0.53,
+    "D=0.50": 1.11,
+    "D=0.33": 1.53
+   },
+   "null_T": {
+    "p50": 8.8,
+    "p90": 14.9,
+    "p95": 15.6,
+    "p99": 18.9,
+    "max": 19.9,
+    "trials": 80
+   }
+  },
+  "runtime_estimate": "400 万初级粒子。旧构型实测 1139 微秒/初级粒子；新构型 D1 体积小了 76%，命中更少，预计不慢于旧构型，约 76 分钟/档。",
+  "frozen_predictions": {
+   "note": "在见到任何 M3 数据之前冻结。来自 design/m3_predict 系列蒙卡（m3v2_predict.json）。该预言器已在旧构型上验过：k 预言 0.819 vs 实测 0.797±0.028，差 1.2σ。",
+   "band_contrast_pct": {
+    "0-8": 23.5,
+    "8-15": 13.2,
+    "15-25": 37.5,
+    "25-35": 44.1
+   },
+   "m2_measured_band_contrast_pct": {
+    "0-8": 12.21,
+    "8-15": 14.07,
+    "15-25": 31.93,
+    "25-35": 26.34
+   },
+   "selected_per_million_primaries": 20753,
+   "selected_per_million_primaries_m2": 19821.5,
+   "rate_ratio_per_primary_vs_m2": 1.047,
+   "rate_ratio_per_real_annihilation_vs_m2": 0.646,
+   "fov_half_width_at_depth30_mm": {
+    "m2": 27.9,
+    "m3": 33.3
+   },
+   "k_lateral_scale": {
+    "predicted_m3": 0.844,
+    "predicted_m2": 0.819,
+    "measured_m2": 0.797,
+    "measured_m2_sigma": 0.028
+   }
+  }
+ },
+ "pose": {
+  "head_x_mm": -15.0,
+  "note": "两个新档与 ref1 用同一个位姿，所以 ref1 可以直接当共用底片"
+ }
+}

@@ -1,0 +1,8 @@
+# Legacy ROOT Hits output retained for compatibility with uproot and the old data.
+/gate/output/root/enable
+/gate/output/root/setFileName {OUTPUT_PREFIX}
+/gate/output/root/setRootHitFlag 1
+/gate/output/root/setRootSinglesFlag 0
+/gate/output/root/setRootCoincidencesFlag 0
+/gate/output/root/setRootNtupleFlag 0
+

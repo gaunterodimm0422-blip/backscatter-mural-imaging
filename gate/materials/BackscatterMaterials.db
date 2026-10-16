@@ -1,0 +1,42 @@
+[Elements]
+Hydrogen:   S= H  ; Z=  1. ; A=   1.01     g/mole
+Oxygen:     S= O  ; Z=  8. ; A=  16.00     g/mole
+Sodium:     S= Na ; Z= 11. ; A=  22.99     g/mole
+Magnesium:  S= Mg ; Z= 12. ; A=  24.305    g/mole
+Aluminium:  S= Al ; Z= 13. ; A=  26.981539 g/mole
+Silicon:    S= Si ; Z= 14. ; A=  28.09     g/mole
+Sulfur:     S= S  ; Z= 16. ; A=  32.066    g/mole
+Potassium:  S= K  ; Z= 19. ; A=  39.098    g/mole
+Calcium:    S= Ca ; Z= 20. ; A=  40.08     g/mole
+Iron:       S= Fe ; Z= 26. ; A=  55.845    g/mole
+Gallium:    S= Ga ; Z= 31. ; A=  69.723    g/mole
+Gadolinium: S= Gd ; Z= 64. ; A= 157.25     g/mole
+
+[Materials]
+Vacuum: d=0.000001 mg/cm3 ; n=1
+    +el: name=Hydrogen ; n=1
+
+Concrete: d=2.35 g/cm3 ; n=10 ; state=solid
+    +el: name=Hydrogen  ; f=0.0527
+    +el: name=Oxygen    ; f=0.4746
+    +el: name=Sodium    ; f=0.0162
+    +el: name=Magnesium ; f=0.0024
+    +el: name=Aluminium ; f=0.0433
+    +el: name=Silicon   ; f=0.3008
+    +el: name=Sulfur    ; f=0.0013
+    +el: name=Potassium ; f=0.0182
+    +el: name=Calcium   ; f=0.0787
+    +el: name=Iron      ; f=0.0118
+
+Water: d=1.00 g/cm3 ; n=2 ; state=liquid
+    +el: name=Hydrogen ; n=2
+    +el: name=Oxygen   ; n=1
+
+Iron: d=7.874 g/cm3 ; n=1 ; state=solid
+    +el: name=Iron ; n=1
+
+GAGG: d=6.63 g/cm3 ; n=4 ; state=solid
+    +el: name=Gadolinium ; n=3
+    +el: name=Aluminium  ; n=2
+    +el: name=Gallium    ; n=3
+    +el: name=Oxygen     ; n=12
